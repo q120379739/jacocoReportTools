@@ -153,13 +153,6 @@ public class CreatReportTaskExecutor {
                 }
                 String maven = Terminal.execute("mvn install -Dmaven.test.skip=true",file);
 
-                //写入文件
-//                try (BufferedWriter writer = new BufferedWriter(new FileWriter("maven_output.txt"))) {
-//                    writer.write(maven);
-//                }catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
                 String[] mavenInfos = maven.split("\n");
                 boolean isSucces = false;
                 for (String info:mavenInfos){
