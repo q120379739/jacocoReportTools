@@ -1,7 +1,7 @@
 package test;
 
 import java.lang.reflect.Method;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 /**
  * @Author：hem
  * @Date：10/19/20 7:20 下午
@@ -26,4 +26,5 @@ public class ReflectProcessor {
             System.out.println(b);
         }
     }
+
 }

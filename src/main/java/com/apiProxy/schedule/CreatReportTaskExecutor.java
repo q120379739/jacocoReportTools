@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -150,14 +152,24 @@ public class CreatReportTaskExecutor {
                     return;
                 }
                 String maven = Terminal.execute("mvn install -Dmaven.test.skip=true",file);
+
+                //写入文件
+//                try (BufferedWriter writer = new BufferedWriter(new FileWriter("maven_output.txt"))) {
+//                    writer.write(maven);
+//                }catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
                 String[] mavenInfos = maven.split("\n");
                 boolean isSucces = false;
                 for (String info:mavenInfos){
-                    if (info.matches(".*BUILD SUCCESS.*")){
+                    if (info.contains("BUILD SUCCESS") || info.matches(".*\\s*BUILD SUCCESS\\s*.*") || info.matches(".*BUILD SUCCESS.*")){
                         isSucces = true;
+                        log.info("BUILD任务通过");
                     }
                 }
                 if (!isSucces){
+                    log.info("BUILD任务失败");
                     jacoco.setTaskStatus(2);
                     jacoco.setDescription("build源码失败:");
                     jacocoServer.update(jacoco);
